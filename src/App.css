@@ -198,49 +198,269 @@ section {
   background-image: url("https://grainy-gradients.vercel.app/noise.svg");
 }
 
+/* ═══════════════════════════════════════
+   SHOWCASE SECTION
+═══════════════════════════════════════ */
+.showcase-section {
+  background: var(--black);
+  padding: 120px 0;
+  position: relative;
+}
+
+.showcase-header {
+  text-align: center;
+  margin-bottom: 5rem;
+}
+
+.showcase-title {
+  font-family: var(--serif);
+  font-size: clamp(3rem, 8vw, 6rem);
+  line-height: 0.9;
+  color: var(--white);
+  font-weight: 400;
+  margin-bottom: 0;
+}
+
+.showcase-title em {
+  font-style: italic;
+  color: var(--red);
+}
+
+.showcase-sub {
+  color: rgba(255, 255, 255, 0.35);
+  margin-top: 1.2rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.showcase-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 3.5rem;
+}
+
+.showcase-all-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  text-decoration: none;
+  padding: 1.1rem 2.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: color 0.35s ease, border-color 0.35s ease;
+}
+
+.showcase-all-link:hover {
+  color: var(--red);
+  border-color: rgba(208, 0, 0, 0.5);
+}
+
+/* ═══════════════════════════════════════
+   VIDEO CARD GRID — ASYMMETRIC EDITORIAL
+═══════════════════════════════════════ */
 .video-card-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: 1.6fr 1fr 1fr;
+  grid-template-rows: 340px 340px;
   gap: 1.5rem;
-  margin-top: 4rem;
+  margin-top: 0;
 }
+
+/* Card placements */
+.vc-grid-0 { grid-column: 1;     grid-row: 1 / 3; }
+.vc-grid-1 { grid-column: 2;     grid-row: 1;     }
+.vc-grid-2 { grid-column: 3;     grid-row: 1;     }
+.vc-grid-3 { grid-column: 2 / 4; grid-row: 2;     }
 
 @media (max-width: 1024px) {
   .video-card-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 320px 320px 320px;
   }
+  .vc-grid-0 { grid-column: 1 / 3; grid-row: 1; }
+  .vc-grid-1 { grid-column: 1;     grid-row: 2; }
+  .vc-grid-2 { grid-column: 2;     grid-row: 2; }
+  .vc-grid-3 { grid-column: 1 / 3; grid-row: 3; }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 600px) {
   .video-card-grid {
     grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, 320px);
+  }
+  .vc-grid-0, .vc-grid-1, .vc-grid-2, .vc-grid-3 {
+    grid-column: 1;
+    grid-row: auto;
   }
 }
 
+/* ═══════════════════════════════════════
+   VIDEO CARD — ANATOMY
+═══════════════════════════════════════ */
 .video-card {
   position: relative;
-  height: 450px;
-  background: var(--black);
+  width: 100%;
+  height: 100%;
+  background: #0a0a0a;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: border-color 0.5s ease, box-shadow 0.5s ease;
   z-index: 1;
 }
 
 .video-card.focused {
-  transform: scale(1.15) translateY(-20px);
-  z-index: 1000;
-  border-color: var(--red);
-  box-shadow: 0 40px 80px rgba(0,0,0,0.8);
+  border-color: rgba(208, 0, 0, 0.45);
+  box-shadow: 0 0 60px rgba(208, 0, 0, 0.08), 0 30px 60px rgba(0,0,0,0.6);
+  z-index: 10;
 }
 
+/* Video */
+.video-card-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+/* Dark gradient — dims on hover */
+.video-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0,0,0,0.05) 0%,
+    rgba(0,0,0,0.35) 45%,
+    rgba(0,0,0,0.9)  100%
+  );
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Mouse glare — radial highlight that tracks cursor */
+.video-card-glare {
+  position: absolute;
+  width: 220%;
+  height: 220%;
+  background: radial-gradient(circle, rgba(255,255,255,0.11) 0%, transparent 55%);
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* Left accent bar */
+.video-card-accent {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(to bottom, var(--red), rgba(208,0,0,0.3));
+  transform-origin: bottom;
+  z-index: 4;
+  pointer-events: none;
+}
+
+/* Top accent bar */
+.video-card-top-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(to right, var(--red), transparent 70%);
+  transform-origin: left;
+  z-index: 4;
+  pointer-events: none;
+}
+
+/* Large serif index number */
+.video-card-index {
+  position: absolute;
+  top: 1.4rem;
+  right: 1.6rem;
+  font-family: var(--serif);
+  font-size: clamp(3.5rem, 8vw, 5.5rem);
+  line-height: 1;
+  color: white;
+  z-index: 5;
+  pointer-events: none;
+  user-select: none;
+  letter-spacing: -0.02em;
+}
+
+/* CRT scanlines — static, appear on hover */
+.video-card-scanline {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    transparent    0px,
+    transparent    2px,
+    rgba(0,0,0,0.05) 2px,
+    rgba(0,0,0,0.05) 3px
+  );
+}
+
+/* Content block */
+.video-card-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 2.2rem 2.2rem 2.2rem 2.5rem;
+  z-index: 6;
+}
+
+.video-card-category {
+  font-family: var(--sans);
+  font-size: 0.62rem;
+  color: var(--red);
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.video-card-title {
+  font-family: var(--serif);
+  font-size: clamp(1.4rem, 2.8vw, 2.1rem);
+  color: var(--white);
+  font-weight: 400;
+  line-height: 1.08;
+  margin: 0;
+}
+
+.video-card-cta {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-top: 0.9rem;
+  color: var(--red);
+  font-family: var(--sans);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+/* Focus backdrop */
 .focus-backdrop {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.85);
+  background: rgba(0, 0, 0, 0.85);
   z-index: 998;
   opacity: 0;
   pointer-events: none;
@@ -296,21 +516,6 @@ section {
   color: #666;
 }
 
-.video-card video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0.5;
-  transition: all 0.6s ease;
-  filter: grayscale(100%);
-}
-
-.video-card:hover video {
-  opacity: 1;
-  filter: grayscale(0%);
-  transform: scale(1.1);
-}
-
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -338,31 +543,6 @@ section {
   text-transform: uppercase;
   color: var(--red);
   font-weight: 700;
-}
-
-.video-card-content {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  padding: 2rem;
-  background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-  color: white;
-  z-index: 2;
-}
-
-.video-card-content h4 {
-  font-size: 1.2rem;
-  margin-bottom: 0.5rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1rem;
-}
-
-.video-card-content span {
-  font-size: 0.7rem;
-  color: var(--red);
-  font-weight: 700;
-  letter-spacing: 0.1rem;
 }
 
 .grid-2 {
