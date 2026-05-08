@@ -1,6 +1,13 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from 'framer-motion';
+
+const navLinks = [
+  { name: 'Work', path: '/portfolio' },
+  { name: 'Services', path: '/services' },
+  { name: 'Studio', path: '/about' },
+  { name: 'Contact', path: '/contact' },
+];
 
 const Navbar = () => {
   const { scrollY } = useScroll();
@@ -8,110 +15,196 @@ const Navbar = () => {
   const [lastY, setLastY] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    if (latest > 100 && latest > lastY) {
-      setHidden(true);
-    } else {
-      setHidden(false);
-    }
+  useMotionValueEvent(scrollY, 'change', (latest) => {
+    if (latest > 120 && latest > lastY) setHidden(true);
+    else setHidden(false);
     setLastY(latest);
   });
 
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-
-  const navLinks = [
-    { name: 'Services', path: '/services' },
-    { name: 'Portfolio', path: '/portfolio' },
-    { name: 'Our Story', path: '/about' },
-    { name: 'Contact', path: '/contact' },
-  ];
+  const toggleMenu = () => setIsMenuOpen((v) => !v);
 
   return (
-    <motion.header 
-      variants={{
-        visible: { y: 0 },
-        hidden: { y: '-100%' }
-      }}
-      animate={hidden ? "hidden" : "visible"}
-      transition={{ duration: 0.35, ease: "easeInOut" }}
-      style={{ 
-        position: 'fixed', 
-        top: 0, 
-        width: '100%', 
-        zIndex: 1000, 
-        background: 'rgba(255, 255, 255, 0.95)', 
-        backdropFilter: 'blur(10px)', 
-        borderBottom: '1px solid var(--grey-mid)' 
+    <motion.header
+      variants={{ visible: { y: 0, opacity: 1 }, hidden: { y: '-150%', opacity: 0 } }}
+      animate={hidden ? 'hidden' : 'visible'}
+      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+      style={{
+        position: 'fixed',
+        top: 20,
+        left: 0,
+        right: 0,
+        zIndex: 1000,
+        display: 'flex',
+        justifyContent: 'center',
+        pointerEvents: 'none',
       }}
     >
-      <nav style={{ padding: '0.75rem 0' }}>
-        <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          {/* Logo - Stays visible */}
-          <Link to="/" style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--black)', textDecoration: 'none', fontFamily: 'var(--heading-font)' }}>
-            SHUTTR<span style={{ color: 'var(--red)' }}>TROOPS</span>
-          </Link>
-          
-          {/* Desktop Nav */}
-          <div className="desktop-only" style={{ display: 'flex', gap: '3rem', alignItems: 'center' }}>
-            {navLinks.map((link) => (
-              <Link key={link.name} to={link.path} className="luxury-link">{link.name}</Link>
-            ))}
-            <Link to="/contact" className="btn-minimal" style={{ padding: '0.5rem 1.5rem', fontSize: '0.9rem' }}>Start Project</Link>
-          </div>
+      <nav
+        style={{
+          pointerEvents: 'auto',
+          background: 'rgba(252, 251, 250, 0.92)',
+          backdropFilter: 'blur(14px)',
+          WebkitBackdropFilter: 'blur(14px)',
+          borderRadius: 999,
+          boxShadow: '0 4px 24px rgba(0,0,0,0.05), inset 0 0 0 1px rgba(20,20,19,0.06)',
+          padding: '12px 14px 12px 28px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '2.5rem',
+          maxWidth: 'calc(100% - 32px)',
+        }}
+      >
+        <Link
+          to="/"
+          style={{
+            fontSize: '1.15rem',
+            fontWeight: 700,
+            color: 'var(--ink)',
+            textDecoration: 'none',
+            letterSpacing: '-0.02em',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.4rem',
+          }}
+        >
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden>
+            <circle cx="8" cy="11" r="7" fill="#CF4500" opacity="0.95" />
+            <circle cx="14" cy="11" r="7" fill="#F37338" opacity="0.85" style={{ mixBlendMode: 'multiply' }} />
+          </svg>
+          ShuttrTroops
+        </Link>
 
-          {/* Mobile Menu Toggle */}
-          <div className="mobile-only" onClick={toggleMenu} style={{ cursor: 'pointer', zIndex: 1001, padding: '10px' }}>
-            <div style={{ width: '25px', height: '2px', background: 'var(--black)', marginBottom: isMenuOpen ? '0' : '6px', transform: isMenuOpen ? 'rotate(45deg) translateY(1px)' : 'none', transition: '0.3s' }} />
-            <div style={{ width: '25px', height: '2px', background: 'var(--black)', display: isMenuOpen ? 'none' : 'block', marginBottom: '6px', transition: '0.3s' }} />
-            <div style={{ width: '25px', height: '2px', background: 'var(--black)', transform: isMenuOpen ? 'rotate(-45deg) translateY(-1px)' : 'none', transition: '0.3s' }} />
-          </div>
+        <div className="desktop-only" style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
+          {navLinks.map((link) => (
+            <NavLink
+              key={link.name}
+              to={link.path}
+              className="pill-link"
+              style={({ isActive }) => ({
+                fontSize: 16,
+                fontWeight: 500,
+                letterSpacing: '-0.32px',
+                color: isActive ? 'var(--signal)' : 'var(--ink)',
+                textDecoration: 'none',
+              })}
+            >
+              {link.name}
+            </NavLink>
+          ))}
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <button
+            aria-label="Search"
+            className="desktop-only"
+            style={{
+              width: 44,
+              height: 44,
+              borderRadius: '50%',
+              background: 'transparent',
+              border: '1px solid rgba(20,20,19,0.15)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'var(--ink)',
+              cursor: 'pointer',
+            }}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-3-3" strokeLinecap="round" />
+            </svg>
+          </button>
+
+          <Link
+            to="/contact"
+            className="btn-ink desktop-only"
+            style={{ padding: '10px 20px', fontSize: 15 }}
+          >
+            Start Project
+            <svg width="14" height="10" viewBox="0 0 14 10" fill="none">
+              <path d="M0 5h12M9 1l3 4-3 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </Link>
+
+          <button
+            className="mobile-only"
+            onClick={toggleMenu}
+            aria-label="Menu"
+            style={{
+              width: 44,
+              height: 44,
+              borderRadius: '50%',
+              background: 'var(--ink)',
+              color: 'var(--canvas)',
+              border: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+            }}
+          >
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+              <span style={{ width: 16, height: 1.5, background: 'var(--canvas)' }} />
+              <span style={{ width: 16, height: 1.5, background: 'var(--canvas)' }} />
+            </div>
+          </button>
         </div>
       </nav>
 
-      {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
             style={{
               position: 'fixed',
-              top: 0,
-              right: 0,
-              width: '80%',
-              height: '100vh',
-              background: 'var(--white)',
-              zIndex: 1000,
-              padding: '100px 2rem',
-              boxShadow: '-10px 0 30px rgba(0,0,0,0.1)'
+              top: 90,
+              left: 16,
+              right: 16,
+              background: 'var(--lifted)',
+              borderRadius: 32,
+              padding: '2rem 1.5rem',
+              boxShadow: '0 24px 48px rgba(0,0,0,0.12)',
+              zIndex: 1001,
+              pointerEvents: 'auto',
             }}
           >
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {navLinks.map((link) => (
-                <Link 
-                  key={link.name} 
-                  to={link.path} 
+                <Link
+                  key={link.name}
+                  to={link.path}
                   onClick={toggleMenu}
-                  style={{ fontSize: '2.5rem', textDecoration: 'none', color: 'var(--black)', fontFamily: 'var(--heading-font)' }}
+                  style={{
+                    fontSize: '2rem',
+                    fontWeight: 500,
+                    letterSpacing: '-0.02em',
+                    textDecoration: 'none',
+                    color: 'var(--ink)',
+                  }}
                 >
                   {link.name}
                 </Link>
               ))}
-              <Link to="/contact" onClick={toggleMenu} className="btn-minimal" style={{ textAlign: 'center', marginTop: '2rem' }}>Start Project</Link>
+              <Link
+                to="/contact"
+                onClick={toggleMenu}
+                className="btn-ink"
+                style={{ marginTop: '1.5rem', justifyContent: 'center' }}
+              >
+                Start Project
+              </Link>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
       <style>{`
-        @media (min-width: 769px) {
-          .mobile-only { display: none; }
-        }
-        @media (max-width: 768px) {
-          .desktop-only { display: none; }
-        }
+        @media (min-width: 769px) { .mobile-only { display: none !important; } }
+        @media (max-width: 768px) { .desktop-only { display: none !important; } }
       `}</style>
     </motion.header>
   );

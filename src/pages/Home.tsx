@@ -4,10 +4,13 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 import Hero from '../components/home/Hero';
+import ClientStrip from '../components/home/ClientStrip';
 import Showcase from '../components/home/Showcase';
 import Mission from '../components/home/Mission';
 import Process from '../components/home/Process';
 import Impact from '../components/home/Impact';
+import Testimonials from '../components/home/Testimonials';
+import FAQ from '../components/home/FAQ';
 import FinalCTA from '../components/home/FinalCTA';
 import PageTransition from '../components/PageTransition';
 import Marquee from '../components/Marquee';
@@ -59,10 +62,13 @@ const Home = () => {
       <div className="focus-backdrop" />
       <div ref={containerRef} style={{ paddingTop: 'var(--nav-height)' }}>
         <Hero heroRef={heroRef} heroY={heroY} heroOpacity={heroOpacity} />
+        <ClientStrip />
         <Showcase />
         <Mission />
         <Process />
         <Impact />
+        <Testimonials />
+        <FAQ />
         <Marquee />
         <FinalCTA />
       </div>

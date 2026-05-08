@@ -1,40 +1,40 @@
-import { 
-  BarChart, 
-  Bar, 
-  XAxis, 
-  YAxis, 
-  Tooltip, 
-  ResponsiveContainer, 
-  Cell 
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  Cell,
 } from 'recharts';
+import Counter from '../Counter';
 
 const chartData = [
-  { name: "EXP", label: "Experience", value: 10, full: 12, display: "10+ Yrs" },
-  { name: "ROI", label: "Avg. ROI", value: 8.5, full: 10, display: "8.5x" },
-  { name: "REACH", label: "Countries", value: 18, full: 20, display: "18+" },
-  { name: "RET", label: "Retention", value: 92, full: 100, display: "92%" },
+  { name: 'EXP',   label: 'Experience',    value: 10,  full: 12,   display: '10+ Yrs', counter: { to: 10,  prefix: '',  suffix: '+ Yrs', decimals: 0 } },
+  { name: 'CUTS',  label: 'Edits Shipped', value: 850, full: 1000, display: '850+',    counter: { to: 850, prefix: '',  suffix: '+',     decimals: 0 } },
+  { name: 'REACH', label: 'Countries',     value: 18,  full: 20,   display: '18+',     counter: { to: 18,  prefix: '',  suffix: '+',     decimals: 0 } },
+  { name: 'RET',   label: 'Retention',     value: 92,  full: 100,  display: '92%',     counter: { to: 92,  prefix: '',  suffix: '%',     decimals: 0 } },
 ];
 
-interface TooltipPayload {
-  payload: {
-    label: string;
-    display: string;
-  };
-}
+interface TooltipPayload { payload: { label: string; display: string } }
 
 const CustomTooltip = ({ active, payload }: { active?: boolean; payload?: TooltipPayload[] }) => {
   if (active && payload && payload.length) {
     return (
-      <div style={{ 
-        background: 'var(--black)', 
-        padding: '1rem 1.5rem', 
-        border: '1px solid var(--red)',
-        color: 'white',
-        fontFamily: 'var(--serif)',
-        fontSize: '0.8rem'
-      }}>
-        <p style={{ margin: 0, letterSpacing: '0.1rem' }}>{payload[0].payload.label.toUpperCase()}</p>
-        <p style={{ margin: '0.5rem 0 0', fontSize: '2rem', color: 'var(--red)', lineHeight: 1 }}>{payload[0].payload.display}</p>
+      <div
+        style={{
+          background: 'var(--ink)',
+          padding: '0.85rem 1.25rem',
+          borderRadius: 20,
+          color: 'var(--canvas)',
+          fontSize: 13,
+          letterSpacing: 0.4,
+        }}
+      >
+        <p style={{ margin: 0, textTransform: 'uppercase', fontWeight: 700 }}>{payload[0].payload.label}</p>
+        <p style={{ margin: '0.4rem 0 0', fontSize: '1.6rem', color: 'var(--signal-light)', lineHeight: 1, fontWeight: 500 }}>
+          {payload[0].payload.display}
+        </p>
       </div>
     );
   }
@@ -43,44 +43,62 @@ const CustomTooltip = ({ active, payload }: { active?: boolean; payload?: Toolti
 
 const Impact = () => {
   return (
-    <section className="bg-white" style={{ padding: '120px 0' }}>
+    <section className="surface-canvas">
       <div className="container">
-        <div style={{ textAlign: 'center', marginBottom: '6rem' }}>
-          <span className="section-num">05 / MARKET IMPACT</span>
-          <h2 style={{ fontSize: 'clamp(3rem, 8vw, 6rem)', lineHeight: 0.9 }}>Measured by <span style={{ fontStyle: 'italic', color: 'var(--red)' }}>Performance.</span></h2>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '2rem', marginBottom: '4rem' }}>
+          <div>
+            <span className="eyebrow">Studio impact</span>
+            <h2 style={{ fontSize: 'clamp(2.5rem, 6vw, 5rem)', lineHeight: 1, fontWeight: 500, letterSpacing: '-0.02em' }}>
+              Numbers that<br /><span style={{ color: 'var(--signal)' }}>cut through.</span>
+            </h2>
+          </div>
+          <p style={{ maxWidth: 360, color: 'var(--slate)', fontSize: '1rem', lineHeight: 1.5 }}>
+            A decade of timelines, color sessions and final masters — pulled from our delivery log.
+          </p>
         </div>
-        
-        <div style={{ height: '500px', width: '100%', padding: '2rem', background: 'var(--grey-light)', border: '1px solid var(--grey-mid)' }} className="grainy">
+
+        <div
+          style={{
+            height: 460,
+            width: '100%',
+            padding: '2.5rem',
+            background: 'var(--lifted)',
+            borderRadius: 40,
+            border: '1px solid rgba(20,20,19,0.06)',
+          }}
+        >
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
-              <XAxis 
-                dataKey="name" 
-                axisLine={false} 
-                tickLine={false} 
-                tick={{ fill: 'var(--black)', fontSize: 12, fontWeight: 700, letterSpacing: '0.1rem' }}
+            <BarChart data={chartData} margin={{ top: 20, right: 20, left: 0, bottom: 20 }}>
+              <XAxis
+                dataKey="name"
+                axisLine={false}
+                tickLine={false}
+                tick={{ fill: 'var(--ink)', fontSize: 12, fontWeight: 700, letterSpacing: 0.5 }}
                 dy={15}
               />
               <YAxis hide domain={[0, 'dataMax + 2']} />
-              <Tooltip cursor={{ fill: 'rgba(0,0,0,0.02)' }} content={<CustomTooltip />} />
-              <Bar 
-                dataKey="value" 
-                radius={[2, 2, 0, 0]} 
-                animationDuration={2500}
-                animationEasing="ease-out"
-              >
+              <Tooltip cursor={{ fill: 'rgba(20,20,19,0.04)' }} content={<CustomTooltip />} />
+              <Bar dataKey="value" radius={[40, 40, 8, 8]} animationDuration={2000} animationEasing="ease-out">
                 {chartData.map((_, index) => (
-                  <Cell key={`cell-${index}`} fill={index % 2 === 0 ? 'var(--black)' : 'var(--red)'} />
+                  <Cell key={`cell-${index}`} fill={index % 2 === 0 ? 'var(--ink)' : 'var(--signal-light)'} />
                 ))}
               </Bar>
             </BarChart>
           </ResponsiveContainer>
         </div>
 
-        <div className="grid-4" style={{ marginTop: '6rem', textAlign: 'center' }}>
+        <div className="grid-4" style={{ marginTop: '3rem' }}>
           {chartData.map((item, idx) => (
-            <div key={idx}>
-              <h4 style={{ fontSize: '4rem', fontFamily: 'var(--serif)', marginBottom: '0rem', lineHeight: 0.8 }}>{item.display}</h4>
-              <p className="section-num" style={{ fontSize: '0.8rem', margin: '1rem 0 0', letterSpacing: '0.2rem' }}>{item.label}</p>
+            <div key={idx} className="stat-tile">
+              <div className="stat-num">
+                <Counter
+                  to={item.counter.to}
+                  prefix={item.counter.prefix}
+                  suffix={item.counter.suffix}
+                  decimals={item.counter.decimals}
+                />
+              </div>
+              <span className="stat-label">{item.label}</span>
             </div>
           ))}
         </div>

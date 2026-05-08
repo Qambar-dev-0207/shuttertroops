@@ -1,97 +1,275 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-red: #D00000;
-  --color-brand-black: #050505;
-  --color-brand-grey: #121212;
-  
-  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
-  --font-serif: "Playfair Display", serif;
+  --color-canvas: #F3F0EE;
+  --color-lifted: #FCFBFA;
+  --color-ink: #141413;
+  --color-charcoal: #262627;
+  --color-slate: #696969;
+  --color-signal: #CF4500;
+  --color-signal-light: #F37338;
+  --color-clay: #9A3A0A;
+  --color-link: #3860BE;
+  --color-bone: #F4F4F4;
+
+  --font-sans: "Sofia Sans", "Sofia Sans Condensed", system-ui, -apple-system, Arial, sans-serif;
+  --font-display: "Sofia Sans", system-ui, sans-serif;
   --font-mono: ui-monospace, Consolas, monospace;
 }
 
 @layer base {
   :root {
-    --nav-height: 80px;
-    --red: #D00000;
-    --black: #050505;
-    --white: #ffffff;
-    --grey-light: #f5f5f7;
-    --grey-mid: #e0e0e2;
+    --nav-height: 96px;
+
+    --canvas: #F3F0EE;
+    --lifted: #FCFBFA;
+    --whisper: #E8E2DA;
+    --ink: #141413;
+    --charcoal: #262627;
+    --slate: #696969;
+    --dust: #D1CDC7;
+    --signal: #CF4500;
+    --signal-light: #F37338;
+    --clay: #9A3A0A;
+    --link: #3860BE;
+    --white: #FFFFFF;
+
+    --r-sm: 6px;
+    --r-md: 20px;
+    --r-lg: 40px;
+    --r-pill: 999px;
+
+    --shadow-pill: 0 4px 24px rgba(0,0,0,0.04);
+    --shadow-card: 0 24px 48px rgba(0,0,0,0.08);
+    --shadow-feature: 0 70px 110px rgba(0,0,0,0.18);
   }
 
   body {
-    @apply bg-black text-white selection:bg-brand-red selection:text-white overflow-x-hidden;
+    background: var(--canvas);
+    color: var(--ink);
+    font-family: "Sofia Sans", system-ui, Arial, sans-serif;
+    font-weight: 450;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
     cursor: none;
   }
 
-  #root {
-    @apply min-h-screen flex flex-col;
+  body::selection,
+  ::selection {
+    background: var(--ink);
+    color: var(--canvas);
   }
 
-  a, button, [role="button"], .video-card {
+  #root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  a, button, [role="button"], .video-card, .satellite, .pill-link {
     cursor: none !important;
   }
 
-  h1, h2, h3, .serif {
-    @apply font-serif;
+  h1, h2, h3, h4, h5 {
+    font-family: "Sofia Sans", system-ui, sans-serif;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--ink);
   }
 }
 
 @layer components {
   .container {
-    @apply max-w-[1440px] mx-auto px-6 md:px-12 w-full;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 48px;
+    width: 100%;
   }
 
-  .btn-minimal {
-    @apply px-10 py-4 border border-white uppercase tracking-widest text-[0.8rem] font-bold 
-           transition-all duration-500 ease-out hover:bg-white hover:text-black;
+  /* === BUTTONS === */
+  .btn-ink {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--ink);
+    color: var(--canvas);
+    border: 1.5px solid var(--ink);
+    border-radius: var(--r-md);
+    padding: 14px 28px;
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: -0.32px;
+    text-decoration: none;
+    transition: transform 0.2s ease, background 0.3s ease;
   }
 
-  .btn-red {
-    @apply border-brand-red text-brand-red hover:bg-brand-red hover:text-white;
+  .btn-ink:hover {
+    transform: translateY(-1px);
+    background: var(--charcoal);
   }
 
-  .section-num {
-    @apply block text-brand-red font-mono text-[0.7rem] tracking-[0.3em] mb-6 uppercase;
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--white);
+    color: var(--ink);
+    border: 1.5px solid var(--ink);
+    border-radius: var(--r-md);
+    padding: 14px 28px;
+    font-weight: 450;
+    font-size: 16px;
+    letter-spacing: -0.32px;
+    text-decoration: none;
+    transition: transform 0.2s ease, background 0.3s ease;
   }
 
-  .grainy {
-    position: relative;
+  .btn-outline:hover {
+    transform: translateY(-1px);
+    background: var(--canvas);
   }
 
-  .grainy::before {
+  .btn-signal {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--signal);
+    color: var(--white);
+    border: 0;
+    border-radius: 24px;
+    padding: 10px 26px;
+    font-weight: 500;
+    font-size: 14px;
+    text-decoration: none;
+  }
+
+  /* Eyebrow label with signal-orange dot */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.56px;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+
+  .eyebrow::before {
     content: "";
-    position: absolute;
-    inset: 0;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--signal-light);
+    display: inline-block;
+  }
+
+  /* === CIRCULAR PORTRAIT === */
+  .portrait {
+    position: relative;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--lifted);
+  }
+
+  .portrait img,
+  .portrait video {
     width: 100%;
     height: 100%;
-    z-index: 10;
+    object-fit: cover;
+  }
+
+  .satellite {
+    position: absolute;
+    bottom: 6px;
+    right: 6px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink);
+    text-decoration: none;
+    border: 0;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.12);
+    transition: transform 0.3s ease, background 0.3s ease;
+  }
+
+  .satellite:hover {
+    transform: translate(2px, -2px) scale(1.05);
+    background: var(--ink);
+    color: var(--canvas);
+  }
+
+  /* === STADIUM (40px radius) === */
+  .stadium {
+    border-radius: 40px;
+    overflow: hidden;
+  }
+
+  /* === GHOST WATERMARK === */
+  .ghost-headline {
+    font-family: "Sofia Sans", sans-serif;
+    font-weight: 500;
+    color: var(--whisper);
+    letter-spacing: -0.02em;
+    line-height: 0.95;
+    user-select: none;
     pointer-events: none;
-    background-image: url("https://grainy-gradients.vercel.app/noise.svg");
-    opacity: 0.05;
-    mix-blend-mode: overlay;
   }
 
-  .pill-grid {
-    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-white/10 mt-32 border border-white/10;
+  /* === SECTION CHIP === */
+  .section-num {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.56px;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
   }
 
-  .pill-item {
-    @apply bg-black p-12 text-left border-white/10;
+  .section-num::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--signal-light);
   }
 
-  .grid-2 { @apply grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-center; }
-  .grid-3 { @apply grid grid-cols-1 md:grid-cols-3 gap-8; }
-  .grid-4 { @apply grid grid-cols-2 lg:grid-cols-4 gap-8; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4rem; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; }
+
+  @media (max-width: 1024px) {
+    .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; gap: 3rem; }
+    .container { padding: 0 24px; }
+  }
+
+  /* Surfaces */
+  .surface-canvas { background: var(--canvas); color: var(--ink); }
+  .surface-lifted { background: var(--lifted); color: var(--ink); }
+  .surface-ink    { background: var(--ink);    color: var(--canvas); }
 }
 
 @layer utilities {
   .focus-active .focus-backdrop {
-    @apply opacity-100 scale-100;
+    opacity: 1;
+    pointer-events: auto;
   }
 
-  .focus-backdrop {
-    @apply fixed inset-0 bg-black/80 z-[5] pointer-events-none opacity-0 scale-110 transition-all duration-700 ease-out;
+  /* Orbital arc — thin signal-light curve */
+  .orbital-arc {
+    position: absolute;
+    pointer-events: none;
+    stroke: var(--signal-light);
+    stroke-width: 1.2;
+    fill: none;
   }
 }

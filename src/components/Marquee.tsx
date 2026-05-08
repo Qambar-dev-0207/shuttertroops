@@ -1,17 +1,17 @@
-
-
 const Marquee = () => {
-  const items = ["Cinematic Excellence", "Strategic Impact", "Digital Evolution", "Bespoke Design"];
+  const items = ['Brand films', 'Color & sound', 'Social cutdowns', 'Documentary', 'Title design', 'Reels & TVCs'];
 
   return (
-    <div className="marquee-container">
-      <div className="marquee-content">
-        {[...items, ...items].map((item, idx) => (
-          <div key={idx} className="marquee-item">
-            {item}
-            <div className="marquee-dot" />
-          </div>
-        ))}
+    <div style={{ background: 'var(--canvas)', padding: '0 0 4rem' }}>
+      <div className="marquee-container">
+        <div className="marquee-content">
+          {[...items, ...items, ...items].map((item, idx) => (
+            <div key={idx} className="marquee-item">
+              {item}
+              <div className="marquee-dot" />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

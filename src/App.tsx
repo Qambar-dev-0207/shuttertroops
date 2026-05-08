@@ -5,7 +5,7 @@ import Footer from './components/Footer';
 import SmoothScroll from './components/SmoothScroll';
 import CustomCursor from './components/CustomCursor';
 import Preloader from './components/Preloader';
-import WebGLBackground from './components/WebGLBackground';
+import ScrollProgress from './components/ScrollProgress';
 import AnimatedRoutes from './AnimatedRoutes';
 import './App.css';
 
@@ -18,7 +18,7 @@ function App() {
       <Router>
         <SmoothScroll>
           <CustomCursor />
-          <WebGLBackground />
+          <ScrollProgress />
           <div className={`app ${isLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-500`}>
             <Navbar />
             <main>
